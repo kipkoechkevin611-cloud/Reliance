@@ -7,46 +7,19 @@ import { useCart } from "@/lib/cart-context";
 interface CartModalProps {
   isOpen: boolean;
   onClose: () => void;
+  onCheckout: () => void;
 }
 
-export const CartModal: React.FC<CartModalProps> = ({ isOpen, onClose }) => {
-  const { cart, removeFromCart, updateQuantity, clearCart, cartTotal } = useCart();
+export const CartModal: React.FC<CartModalProps> = ({ isOpen, onClose, onCheckout }) => {
+  const { cart, removeFromCart, updateQuantity, clearCart, cartTotal, verifiedTotal, hasUnverifiedPrices } = useCart();
 
   if (!isOpen) return null;
-
-  const handleCheckout = () => {
-    if (cart.length === 0) return;
-
-    const message = encodeURIComponent(
-      `Hello Reliance Tanks Ltd,
-
-I would like to place an order for the following items:
-
-${cart
-  .map(
-    (item) =>
-      `- ${item.product.name} (${item.product.capacity || "Size TBD"})
-    ${item.selectedColor ? `Color: ${item.selectedColor}` : ""}
-    Quantity: ${item.quantity}
-    ${item.product.isPriceVerified ? `Price: KSh ${item.product.price?.toLocaleString()}` : item.product.referencePrice ? `Reference Price: KSh ${item.product.referencePrice?.toLocaleString()}` : "Price: Request Price"}`
-  )
-  .join("\n\n")}
-
-Total Reference: KSh ${cartTotal.toLocaleString()}
-
-Please confirm availability, current prices, and delivery arrangements.
-Thank you!`
-    );
-
-    window.open(`https://wa.me/254732934360?text=${message}`, "_blank");
-    onClose();
-  };
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
       <div className="bg-white rounded-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
-        <div className="p-6">
-          <div className="flex justify-between items-center mb-6">
+        <div className="p-8">
+          <div className="flex justify-between items-start mb-6">
             <h2 className="text-2xl font-bold text-navy">Shopping Cart</h2>
             <button
               onClick={onClose}
@@ -69,9 +42,9 @@ Thank you!`
           ) : (
             <>
               <div className="space-y-4 mb-6">
-                {cart.map((item) => (
+                {cart.map((item, index) => (
                   <div
-                    key={`${item.product.id}-${item.selectedColor}`}
+                    key={`${item.product.id}-${item.selectedColor}-${index}`}
                     className="flex items-center gap-4 p-4 bg-gray-50 rounded-lg"
                   >
                     <img
@@ -97,21 +70,21 @@ Thank you!`
                     </div>
                     <div className="flex items-center gap-2">
                       <button
-                        onClick={() => updateQuantity(item.product.id, item.quantity - 1)}
+                        onClick={() => updateQuantity(item.product.id, item.quantity - 1, item.selectedColor)}
                         className="w-8 h-8 rounded-full bg-gray-200 hover:bg-gray-300 flex items-center justify-center font-semibold"
                       >
                         -
                       </button>
                       <span className="w-8 text-center font-medium">{item.quantity}</span>
                       <button
-                        onClick={() => updateQuantity(item.product.id, item.quantity + 1)}
+                        onClick={() => updateQuantity(item.product.id, item.quantity + 1, item.selectedColor)}
                         className="w-8 h-8 rounded-full bg-gray-200 hover:bg-gray-300 flex items-center justify-center font-semibold"
                       >
                         +
                       </button>
                     </div>
                     <button
-                      onClick={() => removeFromCart(item.product.id)}
+                      onClick={() => removeFromCart(item.product.id, item.selectedColor)}
                       className="text-red-500 hover:text-red-700 p-2"
                       aria-label="Remove item"
                     >
@@ -125,12 +98,18 @@ Thank you!`
 
               <div className="border-t pt-4 mb-6">
                 <div className="flex justify-between items-center text-lg font-semibold">
-                  <span>Total Reference:</span>
-                  <span className="text-navy">KSh {cartTotal.toLocaleString()}</span>
+                  <span>Total:</span>
+                  <span className="text-navy">
+                    {hasUnverifiedPrices
+                      ? "To be confirmed"
+                      : `KSh ${verifiedTotal.toLocaleString()}`}
+                  </span>
                 </div>
-                <p className="text-sm text-gray-500 mt-1">
-                  * Prices are reference only. Contact us for confirmed pricing.
-                </p>
+                {hasUnverifiedPrices && (
+                  <p className="text-sm text-gray-500 mt-1">
+                    * Some prices require confirmation
+                  </p>
+                )}
               </div>
 
               <div className="flex gap-3">
@@ -144,8 +123,8 @@ Thank you!`
                 >
                   Clear Cart
                 </Button>
-                <Button variant="whatsapp" className="flex-1" onClick={handleCheckout}>
-                  Order via WhatsApp
+                <Button variant="secondary" className="flex-1" onClick={onCheckout}>
+                  Proceed to Checkout
                 </Button>
               </div>
             </>

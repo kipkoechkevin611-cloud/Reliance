@@ -7,13 +7,23 @@ const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 
 export const metadata: Metadata = {
   title: "Reliance Tanks Ltd - Kenya's Trusted Water Storage Solutions",
-  description: "Quality water storage solutions for homes, farms, businesses and institutions in Kenya. Order vertical tanks, loft tanks, underground tanks and more.",
-  keywords: "water tanks Kenya, storage tanks, vertical tanks, loft tanks, underground tanks, Nakuru",
+  description: "Quality water storage solutions for homes, farms, businesses and institutions in Kenya. Order vertical tanks, loft tanks, underground tanks and more with convenient WhatsApp checkout.",
+  keywords: "water tanks Kenya, storage tanks, vertical tanks, loft tanks, underground tanks, Nakuru, water storage, septic tanks, sanitation tanks",
+  authors: [{ name: "Reliance Tanks Ltd" }],
+  creator: "Reliance Tanks Ltd",
+  publisher: "Reliance Tanks Ltd",
+  robots: "index, follow",
   openGraph: {
     title: "Reliance Tanks Ltd - Kenya's Trusted Water Storage Solutions",
-    description: "Quality water storage solutions for homes, farms, businesses and institutions in Kenya.",
+    description: "Quality water storage solutions for homes, farms, businesses and institutions in Kenya. Order online with convenient WhatsApp checkout.",
     type: "website",
     locale: "en_KE",
+    siteName: "Reliance Tanks Ltd",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Reliance Tanks Ltd - Kenya's Trusted Water Storage Solutions",
+    description: "Quality water storage solutions for homes, farms, businesses and institutions in Kenya.",
   },
 };
 

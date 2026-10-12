@@ -7,6 +7,8 @@ import { Button } from "@/components/Button";
 import { Card, CardImage, CardContent } from "@/components/Card";
 import { OrderModal } from "@/components/OrderModal";
 import { CartModal } from "@/components/CartModal";
+import { CheckoutModal } from "@/components/CheckoutModal";
+import { FloatingCart } from "@/components/FloatingCart";
 import { products, categories, capacities, colors, priceRanges, Product } from "@/lib/products";
 
 export default function Home() {
@@ -18,6 +20,7 @@ export default function Home() {
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isCartOpen, setIsCartOpen] = useState(false);
+  const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
   const [openFaq, setOpenFaq] = useState<number | null>(null);
 
   const filteredProducts = products.filter((product) => {
@@ -382,7 +385,7 @@ export default function Home() {
                     </div>
                     <div className="flex gap-3">
                       <Button
-                        variant="primary"
+                        variant="outline"
                         size="sm"
                         className="flex-1"
                         onClick={() => handleOrderClick(product)}
@@ -390,12 +393,12 @@ export default function Home() {
                         View Details
                       </Button>
                       <Button
-                        variant="whatsapp"
+                        variant="secondary"
                         size="sm"
                         className="flex-1"
                         onClick={() => handleOrderClick(product)}
                       >
-                        Order
+                        Add to Cart
                       </Button>
                     </div>
                   </CardContent>
@@ -596,7 +599,23 @@ export default function Home() {
       )}
 
       {/* Cart Modal */}
-      <CartModal isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} />
+      <CartModal
+        isOpen={isCartOpen}
+        onClose={() => setIsCartOpen(false)}
+        onCheckout={() => {
+          setIsCartOpen(false);
+          setIsCheckoutOpen(true);
+        }}
+      />
+
+      {/* Checkout Modal */}
+      <CheckoutModal
+        isOpen={isCheckoutOpen}
+        onClose={() => setIsCheckoutOpen(false)}
+      />
+
+      {/* Floating Cart for Mobile */}
+      <FloatingCart onClick={() => setIsCartOpen(true)} />
     </div>
   );
 }

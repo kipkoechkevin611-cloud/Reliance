@@ -160,14 +160,14 @@ Thank you!`
             <div className="flex gap-4 pt-4">
               <Button
                 type="button"
-                variant="primary"
+                variant="secondary"
                 className="flex-1"
                 onClick={handleAddToCart}
               >
                 Add to Cart
               </Button>
               <Button type="submit" variant="whatsapp" className="flex-1">
-                Order via WhatsApp
+                Enquire via WhatsApp
               </Button>
             </div>
           </form>
