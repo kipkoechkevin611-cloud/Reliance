@@ -371,6 +371,21 @@ export default function Home() {
                       <p className="text-sm font-medium text-navy mb-3">{product.capacity}</p>
                     )}
                     <p className="text-sm text-gray-600 mb-4 line-clamp-2 leading-relaxed">{product.description}</p>
+                    {product.colors && product.colors.length > 0 && (
+                      <div className="mb-4">
+                        <p className="text-xs text-gray-500 mb-2">Available Colors:</p>
+                        <div className="flex gap-2 flex-wrap">
+                          {product.colors.map((color) => (
+                            <span
+                              key={color}
+                              className="px-2 py-1 text-xs bg-gray-100 text-navy rounded-full"
+                            >
+                              {color}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                    )}
                     <div className="mb-4">
                       <p className="text-lg font-bold text-navy">
                         {product.isPriceVerified

@@ -124,22 +124,35 @@ Thank you!`
           <form onSubmit={handleSubmit} className="space-y-5">
             {product.colors && product.colors.length > 0 && (
               <div>
-                <label className="block text-sm font-medium text-navy mb-2">
+                <label className="block text-sm font-medium text-navy mb-3">
                   Select Color
                 </label>
-                <select
-                  name="color"
-                  value={formData.color}
-                  onChange={handleChange}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-navy"
-                >
-                  <option value="">Select color</option>
+                <div className="flex gap-3 flex-wrap">
+                  <label className="flex items-center gap-2 cursor-pointer">
+                    <input
+                      type="radio"
+                      name="color"
+                      value=""
+                      checked={formData.color === ""}
+                      onChange={handleChange}
+                      className="w-4 h-4 text-navy"
+                    />
+                    <span className="text-sm">Any</span>
+                  </label>
                   {product.colors.map((color) => (
-                    <option key={color} value={color}>
-                      {color}
-                    </option>
+                    <label key={color} className="flex items-center gap-2 cursor-pointer">
+                      <input
+                        type="radio"
+                        name="color"
+                        value={color}
+                        checked={formData.color === color}
+                        onChange={handleChange}
+                        className="w-4 h-4 text-navy"
+                      />
+                      <span className="text-sm">{color}</span>
+                    </label>
                   ))}
-                </select>
+                </div>
               </div>
             )}
 

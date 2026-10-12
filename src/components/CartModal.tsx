@@ -58,9 +58,14 @@ export const CartModal: React.FC<CartModalProps> = ({ isOpen, onClose, onCheckou
                         <p className="text-sm text-gray-600">{item.product.capacity}</p>
                       )}
                       {item.selectedColor && (
-                        <p className="text-sm text-gray-600">Color: {item.selectedColor}</p>
+                        <div className="flex items-center gap-2 mt-1">
+                          <span className="text-sm text-gray-600">Color:</span>
+                          <span className="px-2 py-0.5 text-xs bg-navy text-white rounded-full">
+                            {item.selectedColor}
+                          </span>
+                        </div>
                       )}
-                      <p className="text-sm font-medium text-navy mt-1">
+                      <p className="text-sm font-medium text-navy mt-2">
                         {item.product.isPriceVerified
                           ? `KSh ${item.product.price?.toLocaleString()}`
                           : item.product.referencePrice
